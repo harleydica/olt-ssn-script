@@ -1,53 +1,119 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Generator Command Aktivasi OLT</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sintesa Sinergi Nusantara</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.4.2/dist/alpine.js"></script>
+    <style>
+        .menu-item {
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
 </head>
 
 <body>
-    <h3>Generator Command Aktivasi OLT</h3>
-    <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username">
-    </div>
-    <div class="form-group">
-        <label for="sn">Serial Number (SN):</label>
-        <input type="text" id="sn">
-    </div>
-    <div class="form-group">
-        <label for="gponPort">Port GPON:</label>
-        <input type="text" id="gponPort">
-    </div>
-    <div class="form-group">
-        <label for="vlan">VLAN:</label>
-        <select id="vlan">
-            <option value="201">UII</option>
-            <option value="202">KRICAK</option>
-            <option value="203">NGAMPILAN</option>
-            <option value="204">PANEMBAHAN</option>
-            <option value="205">WIROGUNAN</option>
-            <option value="206">TAHUNAN</option>
-            <option value="207">TEGALP</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <label for="profile">Profil Bandwidth:</label>
-        <select id="profile">
-            <option value="10">PRISMA 10</option>
-            <option value="20">PRISMA 20</option>
-            <option value="30">PRISMA 30</option>
-        </select>
-    </div>
-    <div class="form-group">
-        <button onclick="generateCommand()">Generate Command</button>
-    </div>
-    <div class="form-group">
-        <label for="commandResult">Hasil Command:</label>
-        <textarea id="commandResult" rows="13" cols="50" readonly></textarea>
-    </div>
+    <nav class="bg-gray-200 py-4">
+        <div class="container mx-auto flex justify-center">
+            <a href="http://103.182.81.36/pppoe/?get=addpppoe" target="_blank"
+                class="menu-item px-4 py-2 mx-2 rounded-md">PPOE Dashboard</a>
+            <a href="http://ccbs.sintesa.co.id/index" target="_blank" class="menu-item px-4 py-2 mx-2 rounded-md">CCBS
+                SSN</a>
+            <a href="http://111.92.166.178/onucheckv1" target="_blank" class="menu-item px-4 py-2 mx-2 rounded-md">NMS
+                OLT</a>
+            <a href="http://nms.ssnonline.my.id/zabbix/zabbix.php?action=dashboard.view" target="_blank"
+                class="menu-item px-4 py-2 mx-2 rounded-md">NMS Monitoring</a>
+            <a href="#aktivasissn" class="menu-item px-4 py-2 mx-2 rounded-md">Aktivasi Pelanggan</a>
+            <a href="#" class="menu-item px-4 py-2 mx-2 rounded-md">Aktivasi JSS</a>
+        </div>
+    </nav>
+
+    <!-- Isi halaman di sini -->
+
+    <body class="bg-gray-100 px-24">
+        <div class="container mx-auto py-4">
+            <h3 class="text-2xl mb-4">Generator Command Aktivasi OLT</h3>
+            <div class="mb" id="aktivasissn">
+                <label for="username" class="font-bold">Username:</label>
+                <input type="text" id="username" class="border border-gray-300 rounded px-3 py-2 w-full">
+            </div>
+            <div class="mb">
+                <label for="sn" class="font-bold">Serial Number (SN):</label>
+                <input type="text" id="sn" class="border border-gray-300 rounded px-3 py-2 w-full">
+            </div>
+            <div class="mb">
+                <label for="gponPort" class="font-bold">Port GPON:</label>
+                <input type="text" id="gponPort" class="border border-gray-300 rounded px-3 py-2 w-full">
+            </div>
+            <div class="mb">
+                <label for="vlan" class="font-bold">VLAN:</label>
+                <select id="vlan" class="border border-gray-300 rounded px-3 py-2 w-full">
+                    <option value="201">UII</option>
+                    <option value="202">KRICAK</option>
+                    <option value="203">NGAMPILAN</option>
+                    <option value="204">PANEMBAHAN</option>
+                    <option value="205">WIROGUNAN</option>
+                    <option value="206">TAHUNAN</option>
+                    <option value="207">TEGALP</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="profile" class="font-bold">Profil Bandwidth:</label>
+                <select id="profile" class="border border-gray-300 rounded px-3 py-2 w-full">
+                    <option value="10">PRISMA 10</option>
+                    <option value="20">PRISMA 20</option>
+                    <option value="30">PRISMA 30</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <button onclick="generateCommand()" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded">Generate
+                    Command</button>
+                <button onclick="copyToClipboard()"
+                    class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded">Copy</button>
+            </div>
+            <div>
+                <label for="commandResult" class="font-bold">Hasil Command:</label>
+                <textarea id="commandResult" rows="13" cols="50" readonly
+                    class="border border-gray-300 rounded px-3 py-2 w-full"></textarea>
+            </div>
+        </div>
+    </body>
 </body>
+
+<!-- Isi Script di sini -->
+
+<script>
+    function generateCommand() {
+        var username = document.getElementById("username").value;
+        var sn = document.getElementById("sn").value;
+        var gponPort = document.getElementById("gponPort").value;
+        var vlan = document.getElementById("vlan").value;
+        var profile = document.getElementById("profile").value;
+
+        var command = `int gpon-onu_1/${gponPort}\ndescription ${username} sn ${sn} gpon-onu_1/${gponPort}\ntcont 1 profile ${profile}M\ngemport 1 name INTERNET unicast tcont 1 dir both \ngemport 1 traffic-limit upstream ${profile}M downstream ${profile}M\nswitchport mode hybrid vport 1\nservice-port 1 vport 1 user-vlan ${vlan} vlan ${vlan}\nexit\npon-onu-mng gpon-onu_1/${gponPort}\nservice INTERNET gemport 1 vlan ${vlan}\nwan-ip 1 mode pppoe username ${username} password ${sn} vlan-profile vlan${vlan} host 1\nsecurity-mng 1 state enable mode permit protocol web\nwan 1 service internet host 1\n`;
+
+        document.getElementById("commandResult").value = command;
+
+        // Mengarahkan layar ke hasil code
+        const commandResult = document.getElementById('commandResult');
+        commandResult.focus();
+        window.location.href = `#${commandResult.id}`;
+
+    }
+
+    function copyToClipboard() {
+        const commandResult = document.getElementById('commandResult');
+        commandResult.select();
+        commandResult.setSelectionRange(0, 99999); /* Untuk mendukung peramban web yang berbeda */
+        document.execCommand('copy');
+        alert('Hasil Command telah berhasil disalin!');
+    }
+</script>
 
 </html>
